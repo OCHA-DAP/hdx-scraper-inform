@@ -4,7 +4,6 @@
 import logging
 from typing import List, Optional
 
-
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
 from hdx.data.hdxobject import HDXError
@@ -13,20 +12,18 @@ from hdx.utilities.retriever import Retrieve
 logger = logging.getLogger(__name__)
 
 
-class inform:
-
-    def __init__(
-        self, configuration: Configuration, retriever: Retrieve, temp_dir: str
-    ):
+class Inform:
+    def __init__(self, configuration: Configuration, retriever: Retrieve):
         self._configuration = configuration
         self._retriever = retriever
-        self._temp_dir = temp_dir
+        self._temp_dir = retriever.temp_dir
+        self.data = {}
 
+    def get_data(self) -> List[str]:
+        return list(self.data.keys())
 
-    def generate_dataset(self) -> Optional[Dataset]:
-
+    def generate_dataset(self, dataset_name: str) -> Optional[Dataset]:
         # To be generated
-        dataset_name = None
         dataset_title = None
         dataset_time_period = None
         dataset_tags = None

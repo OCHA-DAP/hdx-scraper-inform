@@ -7,8 +7,10 @@ from hdx.utilities.path import temp_dir
 from hdx.utilities.retriever import Retrieve
 from hdx.utilities.useragent import UserAgent
 
+from hdx.scraper.inform.inform import Inform
 
-class Testinform:
+
+class TestInform:
     @pytest.fixture(scope="function")
     def configuration(self, config_dir):
         UserAgent.set_global("test")
@@ -31,15 +33,9 @@ class Testinform:
     def config_dir(self, fixtures_dir):
         return join("src", "hdx", "scraper", "inform", "config")
 
-    def test_inform(
-        self,
-        configuration,
-        fixtures_dir,
-        input_dir,
-        config_dir
-    ):
+    def test_inform(self, configuration, fixtures_dir, input_dir, config_dir):
         with temp_dir(
-            "Testinform",
+            "TestInform",
             delete_on_success=True,
             delete_on_failure=False,
         ) as tempdir:
@@ -52,7 +48,12 @@ class Testinform:
                     save=False,
                     use_saved=True,
                 )
+                inform = Inform(configuration, retriever)
+                dataset_names = inform.get_data()
+                assert dataset_names == []
+                dataset = inform.generate_dataset("")
+                dataset.update_from_yaml(path=join(config_dir, "hdx_dataset_static.yaml"))
+                assert dataset == {}
 
-                dataset.update_from_yaml(
-                    path=join(config_dir, "hdx_dataset_static.yaml")
-                )
+                resources = dataset.get_resources()
+                assert resources[0] == {}
