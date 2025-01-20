@@ -54,12 +54,13 @@ def main(
                 save=save,
                 use_saved=use_saved,
             )
-
             inform = Inform(configuration, retriever)
-            dataset_names = inform.get_data()
 
-            for dataset_name in dataset_names:
-                dataset = inform.generate_dataset(dataset_name)
+            inform.get_risk_data()
+            inform.get_severity_data()
+
+            for dataset_type in inform.data.items():
+                dataset = inform.generate_dataset(dataset_type)
                 dataset.update_from_yaml(
                     path=join(dirname(__file__), "config", "hdx_dataset_static.yaml")
                 )
