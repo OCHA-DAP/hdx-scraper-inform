@@ -1,0 +1,10 @@
+license_id: cc-by
+methodology: Composite Indicator
+caveats:
+dataset_source: INFORM
+package_creator: HDX Data Systems Team
+private: False
+maintainer: fdbb8e79-f020-4039-ab3a-9adb482273b8 # erikawei
+owner_org:  e116c55a-d536-4b47-9308-94b1c7457afe # inform
+data_update_frequency: 180
+notes: The INFORM Risk Index is a global, open-source risk assessment for humanitarian crises and disasters. It can support decisions about prevention, preparedness and response.

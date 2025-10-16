@@ -1,0 +1,11 @@
+# Collector specific configuration
+latest_url: "https://drmkc.jrc.ec.europa.eu/inform-index/api/informapi/countries/scores?workflowid=0"
+latest_name: "INFORM Risk Index"
+latest_description: "CSV containing the latest national INFORM Risk Index values."
+
+trends_url: "https://drmkc.jrc.ec.europa.eu/inform-index/api/informapi/countries/trends/?WorkflowId=0"
+trends_name: "INFORM Risk Index trends"
+trends_description: "CSV containing national INFORM Risk Index trend data from the past 10 years."
+
+tags:
+  - hazards and risk
