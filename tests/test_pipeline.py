@@ -1,14 +1,5 @@
 from os.path import join
 
-from hdx.utilities.downloader import Download
-from hdx.utilities.path import temp_dir
-from hdx.utilities.retriever import Retrieve
-
-from hdx.scraper.inform.pipeline import Pipeline
-
-
-from os.path import join
-
 from hdx.utilities.compare import assert_files_same
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
@@ -65,7 +56,7 @@ class TestPipeline:
                     "data_update_frequency": 180,
                     "notes": "The INFORM Risk Index is a global, open-source risk "
                     "assessment for humanitarian crises and disasters. It can support "
-                    "decisions about prevention, preparedness and response."
+                    "decisions about prevention, preparedness and response.",
                 }
 
                 resources = dataset.get_resources()
@@ -79,7 +70,7 @@ class TestPipeline:
                         "name": "inform-risk-index-trends.csv",
                         "description": "CSV containing national INFORM Risk Index trend data from the past 10 years.",
                         "format": "csv",
-                    }
+                    },
                 ]
                 for resource in resources:
                     filename = resource["name"]

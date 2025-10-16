@@ -2,16 +2,14 @@
 """Inform scraper"""
 
 import logging
-import pandas as pd
 from datetime import datetime
-from typing import List, Optional, Tuple
+from typing import Optional, Tuple
 
+import pandas as pd
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
-from hdx.data.hdxobject import HDXError
 from hdx.location.country import Country
 from hdx.utilities.retriever import Retrieve
-from hdx.utilities.dateparse import default_date, default_enddate
 from slugify import slugify
 
 logger = logging.getLogger(__name__)
@@ -23,21 +21,38 @@ class Pipeline:
         self._retriever = retriever
         self._tempdir = tempdir
 
-
     def get_data(self, url_id, year_col) -> dict:
         data_url = self._configuration[url_id]
         data = self._retriever.download_json(data_url)
 
         df = pd.DataFrame(data)
         df = df[df[year_col] != 0].dropna(subset=[year_col])
-        df["CountryName"] = df["Iso3"].apply(lambda iso3: Country.get_country_name_from_iso3(iso3))
+        df["CountryName"] = df["Iso3"].apply(
+            lambda iso3: Country.get_country_name_from_iso3(iso3)
+        )
         df_sorted = df.sort_values(by=["Iso3", year_col], ascending=[True, False])
 
         if url_id == "latest_url":
-            new_order = ["CountryName", "Iso3", "ValidityYear", "IndicatorName", "IndicatorScore", "Unit"]
+            new_order = [
+                "CountryName",
+                "Iso3",
+                "ValidityYear",
+                "IndicatorName",
+                "IndicatorScore",
+                "Unit",
+            ]
             df_sorted = df_sorted[new_order]
         else:
-            new_order = ["CountryName", "Iso3", "GNAYear", "IndicatorId", "FullName", "IndicatorScore", "WorkflowId", "MethodologyId"]
+            new_order = [
+                "CountryName",
+                "Iso3",
+                "GNAYear",
+                "IndicatorId",
+                "FullName",
+                "IndicatorScore",
+                "WorkflowId",
+                "MethodologyId",
+            ]
             df_sorted = df_sorted[new_order]
 
         # group_by_country = {iso: group.to_dict(orient="records") for iso, group in df_sorted.groupby("Iso3")}
@@ -71,7 +86,7 @@ class Pipeline:
         #     return
 
         # Latest resource
-        latest_resource_name = f"{slugify(self._configuration["latest_name"])}.csv"
+        latest_resource_name = f"{slugify(self._configuration['latest_name'])}.csv"
         latest_resource_data = {
             "name": latest_resource_name,
             "description": self._configuration["latest_description"],
@@ -88,7 +103,7 @@ class Pipeline:
         )
 
         # Trends resource
-        trends_resource_name = f"{slugify(self._configuration["trends_name"])}.csv"
+        trends_resource_name = f"{slugify(self._configuration['trends_name'])}.csv"
         trends_resource_data = {
             "name": trends_resource_name,
             "description": self._configuration["trends_description"],
