@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-inform/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-inform?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-This script ...
+This script pulls INFORM national risk data from the INFORM API. It creates two resources in the INFORM Risk dataset, one for latest data and one for trend data from the past 10 years.
 
 ## Development
 

@@ -54,9 +54,18 @@ class TestPipeline:
                     "maintainer": "fdbb8e79-f020-4039-ab3a-9adb482273b8",
                     "owner_org": "e116c55a-d536-4b47-9308-94b1c7457afe",
                     "data_update_frequency": 180,
-                    "notes": "The INFORM Risk Index is a global, open-source risk "
-                    "assessment for humanitarian crises and disasters. It can support "
-                    "decisions about prevention, preparedness and response.",
+                    "notes": "The overall INFORM risk index identifies countries at risk from "
+                    "humanitarian crises and disasters that could overwhelm national "
+                    "response capacity. It is made up of three dimensions - hazards and "
+                    "exposure, vulnerability and lack of coping capacity. Over the last "
+                    "ten years (INFORM Risk Index 2016-2025 2nd edition), there has been "
+                    "a general increase in the risk of humanitarian crises at global "
+                    "level. While there has been an improvement in coping capacity, this "
+                    "has been negated by large increases in the number of people exposed "
+                    "to hazards, and to their vulnerability. The development of "
+                    "institutions and infrastructure has helped decrease risks, but this "
+                    "has not kept pace with the increased exposure to natural hazards "
+                    "and conflict, combined with socioeconomic challenges.",
                 }
 
                 resources = dataset.get_resources()
@@ -71,8 +80,17 @@ class TestPipeline:
                         "description": "CSV containing national INFORM Risk Index trend data from the past 10 years.",
                         "format": "csv",
                     },
+                    {
+                        "description": "INFORM Concept and Methodology report",
+                        "format": "PDF",
+                        "name": "inform-codebook.pdf",
+                        "url": "https://drmkc.jrc.ec.europa.eu/inform-index/Portals/0/InfoRM/INFORM "
+                        "Concept and Methodology Version 2017 Pdf FINAL.pdf",
+                    },
                 ]
                 for resource in resources:
+                    if "url" in resource:
+                        continue
                     filename = resource["name"]
                     actual = join(tempdir, filename)
                     expected = join(fixtures_dir, filename)

@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 import pandas as pd
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
+from hdx.data.resource import Resource
 from hdx.location.country import Country
 from hdx.utilities.retriever import Retrieve
 from slugify import slugify
@@ -114,6 +115,25 @@ class Pipeline:
             resourcedata=trends_resource_data,
             headers=list(trends_df.columns),
         )
+
+        # Code book resource
+        codebook_resource_name = "inform-codebook.pdf"
+        codebook_resource_data = {
+            "name": codebook_resource_name,
+            "description": "INFORM Concept and Methodology report",
+            "url": "https://drmkc.jrc.ec.europa.eu/inform-index/Portals/0/InfoRM/INFORM Concept and Methodology Version 2017 Pdf FINAL.pdf",
+            "format": "PDF",
+        }
+        codebook_resource = Resource(
+            {
+                "name": "inform-codebook.pdf",
+                "description": "INFORM Concept and Methodology report",
+            }
+        )
+        codebook_path = "https://drmkc.jrc.ec.europa.eu/inform-index/Portals/0/InfoRM/INFORM Concept and Methodology Version 2017 Pdf FINAL.pdf"
+        codebook_resource.set_format("pdf")
+        codebook_resource.set_file_to_upload(codebook_path)
+        dataset.add_update_resources([codebook_resource_data])
 
         return dataset
 
