@@ -92,14 +92,12 @@ class Pipeline:
             "description": self._configuration["latest_description"],
         }
 
-        dataset.generate_resource_from_iterable(
-            headers=list(latest_df.columns),
-            iterable=latest_df.to_dict(orient="records"),
-            hxltags={},
+        dataset.generate_resource(
             folder=self._tempdir,
             filename=latest_resource_name,
+            rows=latest_df.to_dict(orient="records"),
             resourcedata=latest_resource_data,
-            quickcharts=None,
+            headers=list(latest_df.columns),
         )
 
         # Trends resource
@@ -109,14 +107,12 @@ class Pipeline:
             "description": self._configuration["trends_description"],
         }
 
-        dataset.generate_resource_from_iterable(
-            headers=list(trends_df.columns),
-            iterable=trends_df.to_dict(orient="records"),
-            hxltags={},
+        dataset.generate_resource(
             folder=self._tempdir,
             filename=trends_resource_name,
+            rows=trends_df.to_dict(orient="records"),
             resourcedata=trends_resource_data,
-            quickcharts=None,
+            headers=list(trends_df.columns),
         )
 
         return dataset

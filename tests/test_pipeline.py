@@ -38,7 +38,7 @@ class TestPipeline:
                     "caveats": None,
                     "name": "inform-risk-index",
                     "title": "INFORM Risk Index",
-                    "dataset_date": "[2011-01-01T00:00:00 TO 2025-01-01T23:59:59]",
+                    "dataset_date": "[2011-01-01T00:00:00 TO 2026-01-01T23:59:59]",
                     "tags": [
                         {
                             "name": "hazards and risk",
