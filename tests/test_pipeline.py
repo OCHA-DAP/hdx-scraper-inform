@@ -51,7 +51,7 @@ class TestPipeline:
                     "groups": [{"name": "world"}],
                     "package_creator": "HDX Data Systems Team",
                     "private": False,
-                    "maintainer": "fdbb8e79-f020-4039-ab3a-9adb482273b8",
+                    "maintainer": "fe820406-8445-4543-8551-fb1489e0c38f",
                     "owner_org": "e116c55a-d536-4b47-9308-94b1c7457afe",
                     "data_update_frequency": 180,
                     "notes": "The overall INFORM risk index identifies countries at risk from "
@@ -71,19 +71,19 @@ class TestPipeline:
                 resources = dataset.get_resources()
                 assert resources == [
                     {
-                        "name": "inform-risk-index.csv",
+                        "name": "inform_risk_index.csv",
                         "description": "CSV containing the latest national INFORM Risk Index values.",
                         "format": "csv",
                     },
                     {
-                        "name": "inform-risk-index-trends.csv",
+                        "name": "inform_risk_index_trends.csv",
                         "description": "CSV containing national INFORM Risk Index trend data from the past 10 years.",
                         "format": "csv",
                     },
                     {
                         "description": "INFORM Concept and Methodology report",
                         "format": "PDF",
-                        "name": "inform-codebook.pdf",
+                        "name": "inform_codebook.pdf",
                         "url": "https://drmkc.jrc.ec.europa.eu/inform-index/Portals/0/InfoRM/INFORM "
                         "Concept and Methodology Version 2017 Pdf FINAL.pdf",
                     },

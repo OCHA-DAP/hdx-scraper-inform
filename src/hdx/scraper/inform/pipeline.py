@@ -51,12 +51,8 @@ class Pipeline:
                 "IndicatorId",
                 "FullName",
                 "IndicatorScore",
-                "WorkflowId",
-                "MethodologyId",
             ]
             df_sorted = df_sorted[new_order]
-
-        # group_by_country = {iso: group.to_dict(orient="records") for iso, group in df_sorted.groupby("Iso3")}
 
         return df_sorted
 
@@ -78,16 +74,11 @@ class Pipeline:
         dataset.set_time_period(min_date, max_date)
         dataset.add_tags(self._configuration["tags"])
         dataset.add_other_location("world")
-        # Only if needed
-        # dataset.set_subnational(True)
-        # try:
-        #     dataset.add_country_location(dataset_country_iso3)
-        # except HDXError:
-        #     logger.error(f"Couldn't find country {dataset_country_iso3}, skipping")
-        #     return
 
         # Latest resource
-        latest_resource_name = f"{slugify(self._configuration['latest_name'])}.csv"
+        latest_resource_name = (
+            f"{slugify(self._configuration['latest_name'], separator='_')}.csv"
+        )
         latest_resource_data = {
             "name": latest_resource_name,
             "description": self._configuration["latest_description"],
@@ -102,7 +93,9 @@ class Pipeline:
         )
 
         # Trends resource
-        trends_resource_name = f"{slugify(self._configuration['trends_name'])}.csv"
+        trends_resource_name = (
+            f"{slugify(self._configuration['trends_name'], separator='_')}.csv"
+        )
         trends_resource_data = {
             "name": trends_resource_name,
             "description": self._configuration["trends_description"],
@@ -117,7 +110,7 @@ class Pipeline:
         )
 
         # Code book resource
-        codebook_resource_name = "inform-codebook.pdf"
+        codebook_resource_name = "inform_codebook.pdf"
         codebook_resource_data = {
             "name": codebook_resource_name,
             "description": "INFORM Concept and Methodology report",
@@ -126,7 +119,7 @@ class Pipeline:
         }
         codebook_resource = Resource(
             {
-                "name": "inform-codebook.pdf",
+                "name": codebook_resource_name,
                 "description": "INFORM Concept and Methodology report",
             }
         )
