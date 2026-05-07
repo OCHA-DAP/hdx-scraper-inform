@@ -1,5 +1,6 @@
 from os.path import join
 
+from hdx.data.dataset import Dataset
 from hdx.utilities.compare import assert_files_same
 from hdx.utilities.downloader import Download
 from hdx.utilities.path import temp_dir
@@ -9,7 +10,7 @@ from hdx.scraper.inform.pipeline import Pipeline
 
 
 class TestPipeline:
-    def test_pipeline(self, configuration, fixtures_dir, input_dir, config_dir):
+    def test_pipeline(self, configuration, fixtures_dir, input_dir):
         with temp_dir(
             "TestInform",
             delete_on_success=True,
@@ -29,44 +30,23 @@ class TestPipeline:
                 latest_data = pipeline.get_data("latest_url", "ValidityYear")
                 trends_data = pipeline.get_data("trends_url", "GNAYear")
 
-                dataset = pipeline.generate_dataset(latest_data, trends_data)
-                dataset.update_from_yaml(
-                    path=join(config_dir, "hdx_dataset_static.yaml")
+                dataset = Dataset(
+                    {"name": "inform-risk-index-2021", "title": "INFORM Risk Index"}
                 )
+                pipeline.generate_dataset(latest_data, trends_data, dataset)
 
-                assert dataset == {
-                    "caveats": None,
-                    "name": "inform-risk-index",
-                    "title": "INFORM Risk Index",
-                    "dataset_date": "[2011-01-01T00:00:00 TO 2025-01-01T23:59:59]",
-                    "tags": [
-                        {
-                            "name": "hazards and risk",
-                            "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
-                        },
-                    ],
-                    "license_id": "cc-by",
-                    "methodology": "Composite Indicator",
-                    "dataset_source": "INFORM",
-                    "groups": [{"name": "world"}],
-                    "package_creator": "HDX Data Systems Team",
-                    "private": False,
-                    "maintainer": "fe820406-8445-4543-8551-fb1489e0c38f",
-                    "owner_org": "e116c55a-d536-4b47-9308-94b1c7457afe",
-                    "data_update_frequency": 180,
-                    "notes": "The overall INFORM risk index identifies countries at risk from "
-                    "humanitarian crises and disasters that could overwhelm national "
-                    "response capacity. It is made up of three dimensions - hazards and "
-                    "exposure, vulnerability and lack of coping capacity. Over the last "
-                    "ten years (INFORM Risk Index 2016-2025 2nd edition), there has been "
-                    "a general increase in the risk of humanitarian crises at global "
-                    "level. While there has been an improvement in coping capacity, this "
-                    "has been negated by large increases in the number of people exposed "
-                    "to hazards, and to their vulnerability. The development of "
-                    "institutions and infrastructure has helped decrease risks, but this "
-                    "has not kept pace with the increased exposure to natural hazards "
-                    "and conflict, combined with socioeconomic challenges.",
-                }
+                assert dataset["name"] == "inform-risk-index-2021"
+                assert dataset["title"] == "INFORM Risk Index"
+                assert (
+                    dataset["dataset_date"]
+                    == "[2011-01-01T00:00:00 TO 2025-01-01T23:59:59]"
+                )
+                assert dataset["tags"] == [
+                    {
+                        "name": "hazards and risk",
+                        "vocabulary_id": "b891512e-9516-4bf5-962a-7a289772a2a1",
+                    }
+                ]
 
                 resources = dataset.get_resources()
                 assert resources == [

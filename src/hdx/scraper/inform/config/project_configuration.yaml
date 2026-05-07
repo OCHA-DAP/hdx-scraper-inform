@@ -9,3 +9,5 @@ trends_description: "CSV containing national INFORM Risk Index trend data from t
 
 tags:
   - hazards and risk
+
+dataset_name: inform-risk-index-2021

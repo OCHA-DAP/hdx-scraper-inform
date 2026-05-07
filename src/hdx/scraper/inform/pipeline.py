@@ -8,7 +8,6 @@ from typing import Optional, Tuple
 import pandas as pd
 from hdx.api.configuration import Configuration
 from hdx.data.dataset import Dataset
-from hdx.data.resource import Resource
 from hdx.location.country import Country
 from hdx.utilities.retriever import Retrieve
 from slugify import slugify
@@ -56,24 +55,12 @@ class Pipeline:
 
         return df_sorted
 
-    def generate_dataset(self, latest_df, trends_df) -> Optional[Dataset]:
-        dataset_title = "INFORM Risk Index"
-        dataset_name = slugify(dataset_title)
-
-        # Get date range
+    def generate_dataset(
+        self, latest_df, trends_df, dataset: Dataset
+    ) -> Optional[Dataset]:
         min_date, max_date = self.get_date_range(latest_df, trends_df)
-
-        # Dataset info
-        dataset = Dataset(
-            {
-                "name": dataset_name,
-                "title": dataset_title,
-            }
-        )
-
         dataset.set_time_period(min_date, max_date)
         dataset.add_tags(self._configuration["tags"])
-        dataset.add_other_location("world")
 
         # Latest resource
         latest_resource_name = (
@@ -109,24 +96,30 @@ class Pipeline:
             headers=list(trends_df.columns),
         )
 
-        # Code book resource
+        # Code book resource — only add if not already present with a valid description
         codebook_resource_name = "inform_codebook.pdf"
-        codebook_resource_data = {
-            "name": codebook_resource_name,
-            "description": "INFORM Concept and Methodology report",
-            "url": "https://drmkc.jrc.ec.europa.eu/inform-index/Portals/0/InfoRM/INFORM Concept and Methodology Version 2017 Pdf FINAL.pdf",
-            "format": "PDF",
-        }
-        codebook_resource = Resource(
-            {
-                "name": codebook_resource_name,
-                "description": "INFORM Concept and Methodology report",
-            }
+        existing = {r["name"]: r for r in dataset.get_resources()}
+        codebook = existing.get(codebook_resource_name)
+        if not codebook or not codebook.get("description"):
+            dataset.add_update_resources(
+                [
+                    {
+                        "name": codebook_resource_name,
+                        "description": "INFORM Concept and Methodology report",
+                        "url": "https://drmkc.jrc.ec.europa.eu/inform-index/Portals/0/InfoRM/INFORM Concept and Methodology Version 2017 Pdf FINAL.pdf",
+                        "format": "PDF",
+                    }
+                ]
+            )
+
+        # Put generated resources first, any other existing HDX resources after
+        our_names = [latest_resource_name, trends_resource_name, codebook_resource_name]
+        resources = dataset.get_resources()
+        resources.sort(
+            key=lambda r: our_names.index(r["name"])
+            if r["name"] in our_names
+            else len(our_names)
         )
-        codebook_path = "https://drmkc.jrc.ec.europa.eu/inform-index/Portals/0/InfoRM/INFORM Concept and Methodology Version 2017 Pdf FINAL.pdf"
-        codebook_resource.set_format("pdf")
-        codebook_resource.set_file_to_upload(codebook_path)
-        dataset.add_update_resources([codebook_resource_data])
 
         return dataset
 

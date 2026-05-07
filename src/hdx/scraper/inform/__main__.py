@@ -9,6 +9,7 @@ import logging
 from os.path import expanduser, join
 
 from hdx.api.configuration import Configuration
+from hdx.data.dataset import Dataset
 from hdx.data.user import User
 from hdx.facades.infer_arguments import facade
 from hdx.utilities.downloader import Download
@@ -43,7 +44,7 @@ def main(
     """
     logger.info(f"##### {_LOOKUP} version {__version__} ####")
     configuration = Configuration.read()
-    User.check_current_user_write_access("hdx")
+    User.check_current_user_write_access("e116c55a-d536-4b47-9308-94b1c7457afe")
 
     with wheretostart_tempdir_batch(folder=_LOOKUP) as info:
         tempdir = info["folder"]
@@ -63,19 +64,25 @@ def main(
             latest_data = pipeline.get_data("latest_url", "ValidityYear")
             trends_data = pipeline.get_data("trends_url", "GNAYear")
 
-            dataset = pipeline.generate_dataset(latest_data, trends_data)
-            if dataset:
-                dataset.update_from_yaml(
-                    script_dir_plus_file(
-                        join("config", "hdx_dataset_static.yaml"), main
+            dataset = Dataset.read_from_hdx(configuration["dataset_name"])
+            if not dataset:
+                logger.error(
+                    f"Dataset {configuration['dataset_name']} not found on HDX"
+                )
+                return
+            for resource in list(dataset.get_resources()):
+                if not resource.get("description"):
+                    logger.warning(
+                        f"Deleting resource with missing description: {resource['name']}"
                     )
-                )
-                dataset.create_in_hdx(
-                    remove_additional_resources=True,
-                    match_resource_order=False,
-                    updated_by_script=_UPDATED_BY_SCRIPT,
-                    batch=info["batch"],
-                )
+                    dataset.delete_resource(resource)
+            pipeline.generate_dataset(latest_data, trends_data, dataset)
+            dataset.create_in_hdx(
+                remove_additional_resources=False,
+                match_resource_order=True,
+                updated_by_script=_UPDATED_BY_SCRIPT,
+                batch=info["batch"],
+            )
 
 
 if __name__ == "__main__":
