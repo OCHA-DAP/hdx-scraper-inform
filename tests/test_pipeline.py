@@ -31,11 +31,11 @@ class TestPipeline:
                 trends_data = pipeline.get_data("trends_url", "GNAYear")
 
                 dataset = Dataset(
-                    {"name": "inform-risk-index-2021", "title": "INFORM Risk Index"}
+                    {"name": "inform-risk-index", "title": "INFORM Risk Index"}
                 )
                 pipeline.generate_dataset(latest_data, trends_data, dataset)
 
-                assert dataset["name"] == "inform-risk-index-2021"
+                assert dataset["name"] == "inform-risk-index"
                 assert dataset["title"] == "INFORM Risk Index"
                 assert (
                     dataset["dataset_date"]

@@ -18,7 +18,7 @@ charset-normalizer==3.4.7
     # via requests
 ckanapi==4.11
     # via hdx-python-api
-click==8.3.3
+click==8.4.0
     # via typer
 defopt==7.0.0
     # via hdx-python-api
@@ -34,7 +34,7 @@ et-xmlfile==2.0.0
     # via openpyxl
 frictionless==5.19.0
     # via hdx-python-utilities
-hdx-python-api==6.6.7
+hdx-python-api==6.6.8
     # via hdx-scraper-inform (pyproject.toml)
 hdx-python-country==4.1.1
     # via
@@ -47,7 +47,7 @@ hdx-python-utilities==4.0.8
     #   hdx-python-country
 humanize==4.15.0
     # via frictionless
-idna==3.13
+idna==3.15
     # via
     #   email-validator
     #   requests
@@ -69,7 +69,7 @@ loguru==0.7.3
     # via hdx-python-utilities
 makefun==1.16.0
     # via hdx-python-api
-markdown-it-py==4.1.0
+markdown-it-py==4.2.0
     # via rich
 marko==2.2.2
     # via frictionless
@@ -77,11 +77,11 @@ markupsafe==3.0.3
     # via jinja2
 mdurl==0.1.2
     # via markdown-it-py
-numpy==2.4.4
+numpy==2.4.6
     # via pandas
 openpyxl==3.1.5
     # via hdx-python-utilities
-pandas==3.0.2
+pandas==3.0.3
     # via hdx-scraper-inform (pyproject.toml)
 petl==1.7.17
     # via frictionless
@@ -114,7 +114,7 @@ referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
-requests==2.33.1
+requests==2.34.2
     # via
     #   ckanapi
     #   frictionless
@@ -168,7 +168,7 @@ typing-inspection==0.4.2
     # via pydantic
 unidecode==1.4.0
     # via pyphonetics
-urllib3==2.6.3
+urllib3==2.7.0
     # via requests
 validators==0.35.0
     # via frictionless
