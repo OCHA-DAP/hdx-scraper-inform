@@ -3,7 +3,16 @@
 [![Coverage Status](https://coveralls.io/repos/github/OCHA-DAP/hdx-scraper-inform/badge.svg?branch=main&ts=1)](https://coveralls.io/github/OCHA-DAP/hdx-scraper-inform?branch=main)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
-This script pulls INFORM national risk data from the INFORM API. It creates two resources in the INFORM Risk dataset, one for latest data and one for trend data from the past 10 years.
+This script pulls INFORM national risk data from the INFORM API
+(https://drmkc.jrc.ec.europa.eu/inform-index/). It makes 2 read calls to the
+INFORM API (one for latest risk scores, one for 10-year trend data) and 3 HDX
+writes (latest resource, trends resource, and a codebook PDF link). The two
+output CSV resources — approximately 1.7 MB for the latest data and 400 KB for
+trends — are uploaded to the INFORM Risk dataset. The input JSON responses are
+converted to DataFrames; rows with zero years or NaN values are filtered out;
+data is sorted by ISO3 and year; and columns are reordered into the standard
+output format (CountryName, Iso3, ValidityYear, IndicatorName, IndicatorScore,
+Unit). It runs twice yearly (first Monday of June and December).
 
 ## Development
 
